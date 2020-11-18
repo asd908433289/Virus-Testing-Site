@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>Lab Employee Well Testing </head>
+<br></br>
+<style>
+     td, th {
+            border: 1px solid black;
+     }
+     table {
+            border-collapse: collapse;
+            width: 100%
+        }
+</style>
+<body>
+
+    <p>Well Bar Code:     <input type="text" name="wellBarCode" value="" > </input> </p>
+    <p>Poll Bar Code: <input type="text" name="pollBarCode" value=""> </input> </p>
+    <p>Result:  <select name="result">
+        <option value="inProgress">In Progress</option>
+        <option value="negative">Negative</option>
+        <option value="positive">Positive</option>
+       
+    </select></p>
+    <form action="/wellTesting" method="get" ><button type="submit" name="wellTesting"  >Add</button></form>
+    <br></br>
+    <table>
+        <tr>
+            <th>Well Bar Code</th>
+            <th>Poll Bar Code</th>
+            <th>Result</th>
+
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="current well and poll bar code"></input></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <form action="/edit" method="get"><button type="submit" name="edit" >Edit</button></form>
+    <form action="/delete" method="get"><button type="submit" name="delete" >Delete</button></form>
+</body>
+</html>

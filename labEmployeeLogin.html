@@ -3,9 +3,11 @@
 <head>Lab Employee Login Page </head>
 <br></br>
 <body>
-    <p>Email:     <input> </input> </p>
-    <p>Password: <input> </input> </p>
-    <button>Login Collector </button>
-    <button> Lab Login</button>
+
+    <p>Email:     <input type="text" name="email" value="" > </input> </p>
+    <p>Password: <input type="text" name="password" value=""> </input> </p>
+    <form action="/loginCollector" method="get" ><button type="submit" name="loginCollector"  >Login Collector </button></form>
+    <br></br>
+    <form action="/labLogin" method="get"><button type="submit" name="labLogin" > Lab Login</button></form>
 </body>
 </html>
