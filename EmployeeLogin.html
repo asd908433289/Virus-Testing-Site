@@ -6,25 +6,30 @@
         label {
             display: inline-block;
             width: 140px;
-            text-align: right;
+            text-align: middle;
         }
+
+
     </style>
 
 
 </head>
 
 <body>
-    <p style="text-align: center;">Employee Login Page for Results</p>
+    <p>Employee Login Page for Results</p>
     <form method="get" action="/employee">
 
-        <label style="text-align: center;">Email:</label>
+        <label style=>Email:</label>
         <input name="Email" type="text"></input>
         <br>
-        <label style="text-align: center;">Password:</label>
+        <label style=>Password:</label>
         <input name="Password" type="text"></input>
         <br>
-        <input type="submit" value="Login" style="text-align: center;">
+        
 
+    </form>
+    <form method="get" action="employeeHome">
+        <input type="submit" value="Login" id="login">
     </form>
 
 
