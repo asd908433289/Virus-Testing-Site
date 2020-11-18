@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <p>Pool Mapping</p>
+    <style type="text/css">
+        label {
+            display: inline-block;
+            width: 140px;
+            text-align: middle;
+        }
+    </style>
+    <style>
+        table,th,td{
+            border: 1px solid black;
+        }
+        table{
+            border-collapse:collapse;
+        }
+    
+        </style>
+
+</head>
+
+<body>
+    <form method="get" action="/Map">
+
+        <label>Pool barcode:</label>
+        <input name="pool" type="text"></input>
+        <br>
+
+        <label>test barcodes:</label>
+        
+        <input name="test1" type="text"></input>
+    
+       
+        <button type="button" onclick="Delete()">Delete</button>
+    
+        
+        <br>
+
+        <button type="button" onclick="Add()">Add more rows</button>
+
+        <br>
+        <input type="submit" value="Submit pool" id="login">
+
+
+        <table>
+            <tr>
+                <th></th>
+                <th>Test Barcodes</th>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name ="name">
+                </td>
+                <td></td>
+            </tr>
+        </table>
+        <script>
+            function Add(){
+            
+            }
+            
+            
+        </script>
+
+
+
+
+
+
+    </form>
+
+
+</body>
+
+</html>
