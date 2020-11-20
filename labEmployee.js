@@ -102,39 +102,7 @@ function writeTestCollection(req, res){
 
     
 
-    let html = `<!DOCTYPE html>
-    <html lang = "en">
-    <head>Lab Employee Test Collection </head>
-    <br></br>
-    <style>
-         td, th {
-                border: 1px solid black;
-         }
-         table {
-                border-collapse: collapse;
-                width: 100%
-            }
-    </style>
-    <body>
-    
-        <p>Employee ID:     <input type="text" name="employeeID" value="" > </input> </p>
-        <p>Test Bar Code: <input type="text" name="testBarCode" value=""> </input> </p>
-        <form action="/testCollection" method="get" ><button type="submit" name="loginCollector"  >Add</button></form>
-        <br></br>
-        <table>
-            <tr>
-                <th>Employee ID</th>
-                <th>Test Bar Code</th>
-    
-            </tr>
-            <tr>
-                <td><input type="checkbox" name="name of current employeeid"></input></td>
-                <td></td>
-            </tr>
-        </table>
-        <form action="/delete" method="get"><button type="submit" name="delete" >Delete</button></form>
-    </body>
-    </html>`;
+    let html = ``;
 
     con.query(sql,function(err,result){
         if (err) throw err;
@@ -151,9 +119,54 @@ function writeTestCollection(req, res){
                 <form action="/" method="get"><button type="submit"> Back</button></form>
             </body>
             </html>`;
+            res.write( html);
+            res.end();
         }
-        res.write( html);
-        res.end();
+        else{
+            let sql2 = `SELECT * FROM employeetest`;
+            html = `<!DOCTYPE html>
+            <html lang = "en">
+            <head>Lab Employee Test Collection </head>
+            <br></br>
+            <style>
+                 td, th {
+                        border: 1px solid black;
+                 }
+                 table {
+                        border-collapse: collapse;
+                        width: 100%
+                    }
+            </style>
+            <body>
+            
+                <p>Employee ID:     <input type="text" name="employeeID" value="" > </input> </p>
+                <p>Test Bar Code: <input type="text" name="testBarCode" value=""> </input> </p>
+                <form action="/testCollection" method="get" ><button type="submit" name="loginCollector"  >Add</button></form>
+                <br></br>
+                <table>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Test Bar Code</th>
+            
+                    </tr>`;
+            con.query(sql2,function(err,result2){
+                for(let item of result2){
+                    html += `<tr>
+                    <td><input type="checkbox" name="name of current employeeid"></input>`+item.employeeID+`</td>
+                    <td>`+item.testBarcode+`</td>
+                </tr>`;
+                }
+
+                html += `</table>
+                <form action="/delete" method="get"><button type="submit" name="delete" >Delete</button></form>
+            </body>
+            </html>`;
+            res.write( html);
+            res.end();
+            });
+          
+        }
+        
     });
 
 }
