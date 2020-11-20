@@ -27,6 +27,8 @@ app.listen(port, ()=> {console.log("server started!");});
 function writeLabLogin(req, res){
     res.writeHead(200,{"Content-Type": "text/html"});
     let query = url.parse(req.url,true).query;
+    query.email = "";
+    query.password = "";
 
 
     let html = `<!DOCTYPE html>
@@ -50,26 +52,55 @@ function writeLabLogin(req, res){
 function writeLabHome(req, res){
     let query = url.parse(req.url,true).query;
 
-    let sql = "SELECT ";
+    let sql = `SELECT * FROM labemployee
+                WHERE email= "`+ query.email +`"
+                AND password= "`+query.password+`"`;
 
     let html = "<!DOCTYPE html>\
-    <html lang = \"en\">\
-    <head>Lab Employee Home Page </head>\
-    <br></br>\
-    <body>\
-        \
-        <button>Pool Mapping </button>\
-        <br></br>\
-        <button> Well Testing</button>\
-    </body>\
-    </html>";
+                <html lang = \"en\">\
+                <head>Lab Employee Home Page </head>\
+                <br></br>\
+                <body>\
+                    \
+                    <button>Pool Mapping </button>\
+                    <br></br>\
+                    <button> Well Testing</button>\
+                </body>\
+                </html>";
+    
+    con.query(sql,function(err,result){
+        if (err) throw err;
+        
+        if(result.length<=0){
+            html = `<!DOCTYPE html>
+            <html lang = "en">
+            <head>Error Page </head>
+            <br></br>
+            <body>
+                <p> The account you just entered is not found. Please click back button to go back to the login page. </p>
+                
+                <br></br>
+                <form action="/" method="get"><button type="submit"> Back</button></form>
+            </body>
+            </html>`;
+        }
+        res.write( html);
+        res.end();
+    });
 
-    res.write( html);
-    res.end();
+    
+
+   
 }
 
 function writeTestCollection(req, res){
     let query = url.parse(req.url,true).query;
+
+    let sql = `SELECT * FROM labemployee
+                WHERE email= "`+ query.email +`"
+                AND password= "`+query.password+`"`;
+
+    
 
     let html = `<!DOCTYPE html>
     <html lang = "en">
@@ -105,7 +136,24 @@ function writeTestCollection(req, res){
     </body>
     </html>`;
 
-    res.write( html);
-    res.end();
+    con.query(sql,function(err,result){
+        if (err) throw err;
+        
+        if(result.length<=0){
+            html = `<!DOCTYPE html>
+            <html lang = "en">
+            <head>Error Page </head>
+            <br></br>
+            <body>
+                <p> The account you just entered is not found. Please click back button to go back to the login page. </p>
+                
+                <br></br>
+                <form action="/" method="get"><button type="submit"> Back</button></form>
+            </body>
+            </html>`;
+        }
+        res.write( html);
+        res.end();
+    });
 
 }
