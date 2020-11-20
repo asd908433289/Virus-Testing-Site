@@ -17,6 +17,8 @@ app.get("/",(req,res)=>{writeLabLogin(req,res)});
 app.get("/labHome",(req,res)=>{writeLabHome(req,res);});
 
 app.get("/testCollection",(req,res)=>{writeTestCollection(req,res);});
+app.get("/poolMapping",(req,res)=>{writePoolMapping(req,res);});
+app.get("/wellTesting",(req,res)=>{writeWellTesting(req,res);});
 
 
 
@@ -56,17 +58,18 @@ function writeLabHome(req, res){
                 WHERE email= "`+ query.email +`"
                 AND password= "`+query.password+`"`;
 
-    let html = "<!DOCTYPE html>\
-                <html lang = \"en\">\
-                <head>Lab Employee Home Page </head>\
-                <br></br>\
-                <body>\
-                    \
-                    <button>Pool Mapping </button>\
-                    <br></br>\
-                    <button> Well Testing</button>\
-                </body>\
-                </html>";
+    let html = `<!DOCTYPE html>
+    <html lang = "en">
+    <head>Lab Employee Home Page </head>
+    <br></br>
+    <body>
+        <form method="get">
+             <button type="submit" formaction="/poolMapping">Pool Mapping </button>
+            <br></br>
+            <button type="submit" formaction="/wellTesting"> Well Testing</button><form>
+       
+    </body>
+    </html>`;
     
     con.query(sql,function(err,result){
         if (err) throw err;
@@ -169,4 +172,140 @@ function writeTestCollection(req, res){
         
     });
 
+}
+
+function writePoolMapping(req, res){
+    let query = url.parse(req.url,true).query;
+
+    let html =`<!DOCTYPE html>
+    <html>
+    
+    <head>
+        <p>Pool Mapping</p>
+        <style type="text/css">
+            label {
+                display: inline-block;
+                width: 140px;
+                text-align: middle;
+            }
+        </style>
+        <style>
+            table,th,td{
+                border: 1px solid black;
+            }
+            table{
+                border-collapse:collapse;
+            }
+        
+            </style>
+    
+    </head>
+    
+    <body>
+        <form method="get" action="/Map">
+    
+            <label>Pool barcode:</label>
+            <input name="pool" type="text"></input>
+            <br>
+    
+            <label>test barcodes:</label>
+            
+            <input name="test1" type="text"></input>
+        
+           
+            <button type="button" onclick="Delete()">Delete</button>
+        
+            
+            <br>
+    
+            <button type="button" onclick="Add()">Add more rows</button>
+    
+            <br>
+            <input type="submit" value="Submit pool" id="login">
+    
+    
+            <table>
+                <tr>
+                    <th></th>
+                    <th>Test Barcodes</th>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" name ="name">
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+            <script>
+                function Add(){
+                
+                }
+                
+                
+            </script>
+    
+    
+    
+    
+    
+    
+        </form>
+    
+    
+    </body>
+    
+    </html>`;
+    res.write(html);
+    res.end();
+
+}
+
+function writeWellTesting(req,res){
+    let query = url.parse(req.url,true).query;
+
+    let html = `<!DOCTYPE html>
+    <html lang = "en">
+    <head>Lab Employee Well Testing </head>
+    <br></br>
+    <style>
+         td, th {
+                border: 1px solid black;
+         }
+         table {
+                border-collapse: collapse;
+                width: 100%
+            }
+    </style>
+    <body>
+    
+        <p>Well Bar Code:     <input type="text" name="wellBarCode" value="" > </input> </p>
+        <p>Poll Bar Code: <input type="text" name="pollBarCode" value=""> </input> </p>
+        <p>Result:  <select name="result">
+            <option value="inProgress">In Progress</option>
+            <option value="negative">Negative</option>
+            <option value="positive">Positive</option>
+           
+        </select></p>
+        <form action="/wellTesting" method="get" ><button type="submit" name="wellTesting"  >Add</button></form>
+        <br></br>
+        <table>
+            <tr>
+                <th>Well Bar Code</th>
+                <th>Poll Bar Code</th>
+                <th>Result</th>
+    
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="current well and poll bar code"></input></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+        <form action="/edit" method="get"><button type="submit" name="edit" >Edit</button></form>
+        <form action="/delete" method="get"><button type="submit" name="delete" >Delete</button></form>
+    </body>
+    </html>`;
+
+    res.write(html);
+    res.end();
 }
