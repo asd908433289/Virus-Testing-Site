@@ -29,8 +29,8 @@ app.listen(port, () => {
 function writeLogin(req,res){
 	res.writeHead(200,{"Content-Type":"text/html"});
     let query =url.parse(req.url,true).query;
-    let email=query.email ?query.email:"";
-	let password=query.password ? query.password:"";
+    query.email = "";
+    query.password = "";
     let html=`<!DOCTYPE html>
     
     <html>
@@ -54,17 +54,17 @@ function writeLogin(req,res){
         <form method="get"action="/">
     
             <label >Email:</label>
-            <input name="Email" type="text"></input>
+            <input name="email" type="text"></input>
             <br>
             <label >Password:</label>
-            <input name="Password" type="text"></input>
+            <input name="password" type="text"></input>
             <br>
-        <form>    
+         
             
     
        
-        <form method="get" action="/employeeHome">
-            <button type="submit" id="login">login</button>
+       
+            <button type="submit" id="login" formaction="employeeHome">login</button>
         </form>
     
     
@@ -76,6 +76,9 @@ function writeLogin(req,res){
 }
 function writeHome(req,res){
     let query=url.parse(req.url,true).query;
+    let sql = `SELECT * FROM employee
+                WHERE email= "`+query.email+`"
+                AND password= "`+query.password+`"`;
     let html=`<!DOCTYPE html>
     <html>
     
@@ -114,7 +117,28 @@ function writeHome(req,res){
     </body>
     
     </html>`
-    res.write(html);
-    res.end();
+   
+
+    con.query(sql,function(err,result){
+        if (err) throw err;
+        
+        if(result.length<=0){
+            html = `<!DOCTYPE html>
+            <html lang = "en">
+            <head>Error Page </head>
+            <br></br>
+            <body>
+                <p> The account: `+query.email+` or password: `+query.password+` is incorrect. </p>
+                
+                <br>
+                <form action="/" method="get"><button type="submit"> Try Again</button></form>
+            </body>
+            </html>`;
+        }
+        res.write( html);
+        res.end();
+        
+    });
+
 }
     
