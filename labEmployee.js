@@ -17,6 +17,9 @@ app.get("/",(req,res)=>{writeLabLogin(req,res)});
 app.get("/labHome",(req,res)=>{writeLabHome(req,res);});
 
 app.get("/testCollection",(req,res)=>{writeTestCollection(req,res);});
+
+
+
 app.get("/poolMapping",(req,res)=>{writePoolMapping(req,res);});
 app.get("/wellTesting",(req,res)=>{writeWellTesting(req,res);});
 
@@ -40,7 +43,7 @@ function writeLabLogin(req, res){
     <body>
        
         <form  method="get">
-        <p>Email:     <input type="text" name="email" value="" > </input> </p>
+        <p >Email:     <input type="text" name="email" value="" > </input> </p>
         <p>Password: <input type="text" name="password" value=""> </input> </p>
         <button type="submit" name="loginCollector" formaction="/testCollection"  >Login Collector </button>
         <br></br>
@@ -96,12 +99,47 @@ function writeLabHome(req, res){
    
 }
 
+
+
+
+
 function writeTestCollection(req, res){
     let query = url.parse(req.url,true).query;
+   
+    let currentEmail = query.email ? query.email: "";
+    let currentPassword = query.password ? query.password: "";
 
+    let employeeID = query.employeeID ? query.employeeID: "";
+    let testBarCode = query.testBarCode ? query.testBarCode: "";
+
+    if(employeeID.length>0&& testBarCode.length>0){
+        
+        var currentDate = new Date();
+        var currentTime = currentDate.getFullYear() + "-"+ currentDate.getMonth()+"-"+currentDate.getDate()+" "+ currentDate.getHours()+":"+currentDate.getMinutes()+":"+currentDate.getSeconds();
+        let currentLabID = query.loginCollector;
+       
+        let addSQL = `INSERT INTO employeetest (testBarcode, employeeID, collectionTime, collectedBy) VALUES ('`+testBarCode+`','`+employeeID+`','`+currentTime+`', '`+currentLabID+`')`;
+            
+        con.query(addSQL,function(err,result){
+            if (err) throw err; 
+        });
+            
+    }
+
+    
+    
+   
+   
+
+    
+  
     let sql = `SELECT * FROM labemployee
-                WHERE email= "`+ query.email +`"
-                AND password= "`+query.password+`"`;
+                WHERE email= "`+ currentEmail +`"
+                AND password= "`+currentPassword+`"`;
+        
+   
+   
+    
 
     
 
@@ -126,6 +164,7 @@ function writeTestCollection(req, res){
             res.end();
         }
         else{
+            
             let sql2 = `SELECT * FROM employeetest`;
             html = `<!DOCTYPE html>
             <html lang = "en">
@@ -141,11 +180,18 @@ function writeTestCollection(req, res){
                     }
             </style>
             <body>
-            
-                <p>Employee ID:     <input type="text" name="employeeID" value="" > </input> </p>
-                <p>Test Bar Code: <input type="text" name="testBarCode" value=""> </input> </p>
-                <form action="/testCollection" method="get" ><button type="submit" name="loginCollector"  >Add</button></form>
+            <form action="/testCollection" method="get" >
+                <input type="hidden" name="email" value="`+currentEmail+`" ></input>
+                <input type="hidden" name="password" value="`+currentPassword+`" ></input>
+                <input type="hidden" name="loginCollector" value="`+result[0].labID+`"></input>
+                <p >Employee ID:     <input type="text" name="employeeID" value="" > </input> </p>
+                <p >Test Bar Code: <input type="text" name="testBarCode" value=""> </input> </p>
+                <button type="submit"  >Add</button></form>
                 <br></br>
+                <form action="/testCollection" method="get">
+                <input type="hidden" name="email" value="`+currentEmail+`" ></input>
+                <input type="hidden" name="password" value="`+currentPassword+`" ></input>
+                <input type="hidden" name="loginCollector" value="`+result[0].labID+`"></input>
                 <table>
                     <tr>
                         <th>Employee ID</th>
@@ -153,15 +199,26 @@ function writeTestCollection(req, res){
             
                     </tr>`;
             con.query(sql2,function(err,result2){
+                if (err) throw err;
                 for(let item of result2){
-                    html += `<tr>
-                    <td><input type="checkbox" name="name of current employeeid"></input>`+item.employeeID+`</td>
+                   
+                    
+                    if(query[item.testBarcode]!=null){
+                        
+                        let tempsql = `DELETE FROM employeetest WHERE testBarcode="`+item.testBarcode+`"`;
+                        con.query(tempsql,function(){});
+                    }
+                    else{
+                        html += `<tr>
+                    <td><input  type="checkbox" name="`+item.testBarcode+`"></input>`+item.employeeID+`</td>
                     <td>`+item.testBarcode+`</td>
                 </tr>`;
+                    }
+                    
                 }
 
                 html += `</table>
-                <form action="/delete" method="get"><button type="submit" name="delete" >Delete</button></form>
+                <button type="submit" name="delete" >Delete</button></form>
             </body>
             </html>`;
             res.write( html);
