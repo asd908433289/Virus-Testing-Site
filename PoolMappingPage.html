@@ -1,78 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang = "en">
+<head>Lab Employee Pool Mapping </head>
+<br></br>
 
-<head>
-    <p>Pool Mapping</p>
-    <style type="text/css">
-        label {
-            display: inline-block;
-            width: 140px;
-            text-align: middle;
-        }
-    </style>
-    <style>
-        table,th,td{
-            border: 1px solid black;
-        }
-        table{
-            border-collapse:collapse;
-        }
-    
-        </style>
-
-</head>
 
 <body>
-    <form method="get" action="/Map">
 
-        <label>Pool barcode:</label>
-        <input name="pool" type="text"></input>
-        <br>
-
-        <label>test barcodes:</label>
-        
-        <input name="test1" type="text"></input>
-    
+    <p>Pool Bar Code:     <input type="text" name="poolBarCode" value="" > </input> </p>
+    <p>Test Bar Code: </p>
+    <table id="table" ></table> 
+   
+    <form action="/writePoolMapping" method="get" id="submitPoolForm" ><button type="button"  onclick="saveTable()" >Submit pool</button></form>
+    <button onclick="addRows()" >Add rows</button>
+    <script>
+        function addRows(){
+           
+            var t = document.getElementById("table");
+            
+            var newR = t.insertRow(t.rows.length);
+            var cell1 = newR.insertCell(0);
+        cell1.innerHTML = `<input type="text" name="testBarCode" > </input>`;
+        var newB = document.createElement("button");
+        newB.innerHTML = "Delete";
+        newB.onclick = function(){deleteRows(newR)};
+        cell1.append(newB);
+      
        
-        <button type="button" onclick="Delete()">Delete</button>
-    
         
-        <br>
+       
+        }
+        function deleteRows(value){
+        value.remove();
+    }
 
-        <button type="button" onclick="Add()">Add more rows</button>
+    function saveTable(){
+        var s = document.getElementById("submitPoolForm");
+        var t = document.getElementById("table");
+        
+        for(let row of t.rows){
+            var p = row.cells.item(0);
+            console.log(row.cells.item(0).innerText);
+            console.log(p.firstElementChild.value);
+            row.remove();
+            var i =  document.createElement("input");
+            i.type = "hidden";
+            i.name = "t";
+            i.name += p.firstElementChild.value;
+            s.append(i);
+        }
+    }
+    </script>
+    <style>
+        g {
+               border: 1px solid black;
+        }
+        table {
+               border-collapse: collapse;
+               width: 100%
+           }
+   </style>
+    <br></br>
+    <table>
+        <tr>
+            <th class="g">Pool Bar Code</th>
+            <th class="g">Test Bar Codes</th>
+           
 
-        <br>
-        <input type="submit" value="Submit pool" id="login">
-
-
-        <table>
-            <tr>
-                <th></th>
-                <th>Test Barcodes</th>
-            </tr>
-            <tr>
-                <td>
-                    <input type="checkbox" name ="name">
-                </td>
-                <td></td>
-            </tr>
-        </table>
-        <script>
-            function Add(){
+        </tr>
+        <tr>
+            <td class="g"><input type="radio" name="current pool bar code"></input></td>
+            <td class="g" ></td>
             
-            }
+        </tr>
+        <tr>
+            <td class="g"><input type="radio" name="current pool bar code"></input></td>
+            <td class="g" ></td>
             
-            
-        </script>
-
-
-
-
-
-
-    </form>
-
-
+        </tr>
+    </table>
+    <form action="/writePoolMapping" method="get"><button type="submit" name="edit" >Edit Pool</button></form>
+    <form action="/writePoolMapping" method="get"><button type="submit" name="delete" >Delete Pool</button></form>
 </body>
-
 </html>

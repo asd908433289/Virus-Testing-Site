@@ -234,86 +234,232 @@ function writeTestCollection(req, res){
 function writePoolMapping(req, res){
     let query = url.parse(req.url,true).query;
 
-    let html =`<!DOCTYPE html>
-    <html>
-    
-    <head>
-        <p>Pool Mapping</p>
-        <style type="text/css">
-            label {
-                display: inline-block;
-                width: 140px;
-                text-align: middle;
-            }
-        </style>
-        <style>
-            table,th,td{
+    let html = `<!DOCTYPE html>
+    <html lang = "en">
+    <head>Lab Employee Pool Mapping </head>
+    <br></br>
+    <style>
+          td, th {
                 border: 1px solid black;
-            }
-            table{
-                border-collapse:collapse;
-            }
-        
-            </style>
-    
-    </head>
-    
-    <body>
-        <form method="get" action="/Map">
-    
-            <label>Pool barcode:</label>
-            <input name="pool" type="text"></input>
-            <br>
-    
-            <label>test barcodes:</label>
-            
-            <input name="test1" type="text"></input>
-        
-           
-            <button type="button" onclick="Delete()">Delete</button>
-        
-            
-            <br>
-    
-            <button type="button" onclick="Add()">Add more rows</button>
-    
-            <br>
-            <input type="submit" value="Submit pool" id="login">
-    
-    
-            <table>
-                <tr>
-                    <th></th>
-                    <th>Test Barcodes</th>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" name ="name">
-                    </td>
-                    <td></td>
-                </tr>
-            </table>
-            <script>
-                function Add(){
+         }
+         table {
                 
+                border-collapse: collapse;
+                width: 100%
+            }
+    </style>
+    <script>
+    function addRows(){
+           
+        var t = document.getElementById("testBarCodeTable");
+        
+        var newR = t.insertRow(t.rows.length);
+        var cell1 = newR.insertCell(0);
+        cell1.innerHTML = \`<input type="text" name="testBarCode" > </input>\`;
+        var newB = document.createElement("button");
+        newB.innerHTML = "Delete";
+        newB.onclick = function(){deleteRows(newR)};
+        cell1.append(newB);
+    
+    
+   
+    
+   
+    }
+    function deleteRows(value){
+       
+        value.remove();
+    }
+
+    function saveTable(){
+        var s = document.getElementById("submitPoolForm");
+        var t = document.getElementById("testBarCodeTable");
+        for(let row of t.rows){
+            var p = row.cells.item(0);
+           
+            var i =  document.createElement("input");
+            i.type = "hidden";
+            i.name = "t";
+            i.name += p.firstElementChild.value;
+            s.append(i);
+        }
+    }
+
+    function edit(){
+        var t = document.getElementById("editTable");
+        for(let i=1;i<t.rows.length;i++){
+            var c = t.rows[i].cells[0].firstElementChild;
+            if(c.checked==true){
+               var p = document.getElementById("poolBarCode");
+                p.value = t.rows[i].cells[0].innerText;
+                var t2 = document.getElementById("testBarCodeTable");
+               
+                while(t2.rows.length>0){
+                    t2.rows[0].remove();
+                }
+               
+           
+                var k = t.rows[i].cells[1].innerText.split(", ");
+                for(let item of k){
+                    let newR = t2.insertRow(t2.rows.length);
+                    let cell1 = newR.insertCell(0);
+                    cell1.innerHTML = \`<input type="text" name="testBarCode" value="\`+item+\`" >  </input>\`;
+                    var newB = document.createElement("button");
+                    newB.innerHTML = "Delete";
+                    newB.onclick = function(){deleteRows(newR)};
+                    cell1.append(newB);
+                   
                 }
                 
+                return;
+            }
+        }
+        
+
+    }
+
+</script>
+    <body>
+    <form action="/poolMapping" method="get" id="submitPoolForm" >
+        <p>Pool Bar Code:     <input type="text" name="poolBarCode" id="poolBarCode" value="" > </input> </p>
+        <p>Test Bar Code: 
+        <table id="testBarCodeTable" name="testBarCodeTable">
+        
+</table>  </p>`;
+
+
+   
+   
+
+    let sql3 = `SELECT * FROM poolmap GROUP BY poolBarCode`;
+    con.query(sql3,function(err,result){
+        if(err) throw err;
+        for(let item of result){
+          
+            if(query[("p"+item.poolBarCode)] != null){
+              
+                let sql4 = `DELETE FROM poolmap WHERE poolBarCode="`+item.poolBarCode+`"`;
+                con.query(sql4,function(err2,result2){
+                    if (err2) throw err2;
+                });
+            }
+        }
+
+
+
+        if(query.poolBarCode !=null && query.poolBarCode.length>0){
+            
+            let sql5 = `SELECT * FROM poolmap GROUP BY poolBarCode`;
+            con.query(sql5,function(err5,result5){
+                if(err5) throw err5;
+                for(let item5 of result5){
+                    if(item5.poolBarCode == query.poolBarCode){
+                        let sql6 = `DELETE FROM poolmap WHERE poolBarCode="`+query.poolBarCode+`"`;
+                        con.query(sql6,function(){});
+                    }
+                }
+
+
+                let sql = `SELECT testBarcode FROM employeetest`;
+                con.query(sql,function(err,result){
+                    if(err) throw err;
+                    for(let item of result){
+                      
+                      
+                        if(query[("t"+item.testBarcode)]!= null){
+                           
+                            let sql2 = `INSERT INTO poolmap (testBarCode, poolBarCode) VALUES ('`+item.testBarcode+`','`+query.poolBarCode+`')`;
+                            con.query(sql2,function(err2,result2){
+                                if(err2) throw err2;
+                                
+                            });
+                        }
+                    }
+    
+    
+                   
+                    updatePoolPage();
+    
+                    
+                });
+
+            });
+
+           
+           
+            
+        }
+        else{ updatePoolPage();}
+
+        function updatePoolPage(){
+            html +=`
+            <button type="button" onclick="addRows()">Add rows</button>
+            <button type="submit" onclick="saveTable()"  >Submit pool</button></form>
+             <br></br>
+            <form action="/poolMapping" method="get">
+            <table id="editTable">
+                <tr>
+                    <th>Pool Bar Code</th>
+                    <th>Test Bar Codes</th>
+                   
+        
+                </tr>`;
+        let sql = `SELECT * FROM poolmap ORDER BY poolBarCode`;
+        con.query(sql,function(err,result){
+            if(err) throw err;
+            let previous = result[0].poolBarCode;
+            html += `<tr><td><input type="checkbox" name="p`+result[0].poolBarCode+`"></input>`+result[0].poolBarCode+`</td>`;
+            html+= `<td> `+result[0].testBarCode+``;
+            for(let i=1;i<result.length;i++){
+               if(result[i].poolBarCode == previous){
+                    html += `, `+result[i].testBarCode+``;
+               }
+               else{
+                 html += `  </td>`;
+                 html += `  </tr>`;
+                 html += `<tr><td><input type="checkbox" name="p`+result[i].poolBarCode+`"></input>`+result[i].poolBarCode+`</td>`;
+                 html += `<td>`;
+                 html += result[i].testBarCode;
                 
-            </script>
+                 previous = result[i].poolBarCode;
+               }
+        
+            }
+            html+= `</table>
+           <button type="button"  onclick="edit()" >Edit Pool</button>
+            <button type="submit" name="delete" >Delete Pool</button></form>
+        </body>
+        </html>`;
+        res.write(html);
+        res.end();
+        });
+
+    }
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+    });
+
+   
+   
+
     
-    
-    
-    
-    
-    
-        </form>
-    
-    
-    </body>
-    
-    </html>`;
-    res.write(html);
-    res.end();
+            
+              
+                
+          
+       
 
 }
 
