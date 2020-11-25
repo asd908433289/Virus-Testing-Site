@@ -156,6 +156,8 @@ function writeHome(req, res) {
                 res.end();
 
             });
+
+            
         }
 
     });
