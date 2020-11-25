@@ -13,13 +13,13 @@ const url = require("url");
 const { Console } = require("console");
 
 
-app.get("/employeeLogin", (req, res) => {
+app.get("/employee", (req, res) => {
     writeLogin(req, res);
 });
 app.get("/employeeHome", (req, res) => {
     writeHome(req, res);
 });
-app.get("/", (req, res) => { writeLabLogin(req, res) });
+app.get("/labtech", (req, res) => { writeLabLogin(req, res) });
 
 app.get("/labHome", (req, res) => { writeLabHome(req, res); });
 
@@ -93,7 +93,7 @@ function writeLabHome(req, res) {
                 <p> The account you just entered is not found. Please click back button to go back to the login page. </p>
                 
                 <br></br>
-                <form action="/" method="get"><button type="submit"> Back</button></form>
+                <form action="/labtech" method="get"><button type="submit"> Back</button></form>
             </body>
             </html>`;
         }
@@ -164,7 +164,7 @@ function writeTestCollection(req, res) {
                 <p> The account you just entered is not found. Please click back button to go back to the login page. </p>
                 
                 <br></br>
-                <form action="/" method="get"><button type="submit"> Back</button></form>
+                <form action="/labtech" method="get"><button type="submit"> Back</button></form>
             </body>
             </html>`;
             res.write(html);
@@ -633,7 +633,7 @@ function writeLogin(req, res) {
     
     <body>
         <p>Employee Login Page for Results</p>
-        <form method="get"action="/employeeLogin">
+        <form method="get"action="/employee">
     
             <label >Email:</label>
             <input name="email" type="text"></input>
@@ -679,7 +679,7 @@ function writeHome(req, res) {
                 <p> The account: `+ query.email + ` or password: ` + query.password + ` is incorrect. </p>
                 
                 <br>
-                <form action="/employeeLogin" method="get"><button type="submit"> Try Again</button></form>
+                <form action="/employee" method="get"><button type="submit"> Try Again</button></form>
             </body>
             </html>`;
             res.write(html);
@@ -719,7 +719,11 @@ function writeHome(req, res) {
                 
 
                 for (let item of result2) {
-                    html += `<td>` + item.collectionTime + `</td>
+                   
+                   let t = item.collectionTime.toISOString().substr(0,10).split("-");
+                   
+                  
+                    html += `<td>` +   t[1]  +`/` +t[2]+ `/`+t[0]+ `</td>
                     <td>`+item.result+`</td>
                     </tr>`
                 }
