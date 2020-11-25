@@ -508,6 +508,7 @@ function writeWellTesting(req, res) {
 
         html+=
         `
+        <form action="/welltesting" method="get" id="submitwelltesting" >
         <table id=well>
             <tr>
                 <th>Well Bar Code</th>
@@ -549,6 +550,7 @@ function writeWellTesting(req, res) {
         </table>
         <button type="button" onclick="editx()"= >Edit</button>
         <button type="submit" name="delete" >Delete</button>
+        </form>
 
 
         
