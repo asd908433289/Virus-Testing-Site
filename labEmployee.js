@@ -486,6 +486,21 @@ function writeWellTesting(req, res) {
     let wellBarCode=query.wellBarCode ?query.wellBarCode:"";
     let poolBarCode=query.poolBarCode ? query.poolBarCode:"";
     let result=query.result ? query.result:"";
+    if(wellBarCode!=""&&poolBarCode!=""){
+        var currentDate = new Date();
+        var currentTime = currentDate.getFullYear() + "-" + currentDate.getMonth() + "-" + currentDate.getDate() + " " + currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
+        let sql1=`ALTER TABLE welltesting ADD UNIQUE(poolBarCode);`
+        let sql2=`INSERT INTO welltesting(poolBarCode,wellBarCode,testingStartTime,testingEndTime,result)  value('`+poolBarCode+`','`+wellBarCode+`','`+currentTime+`', '`+currentTime+`','`+result+`') on duplicate key update wellBarCode='`+wellBarCode+`',testingEndTime='`+currentTime+`',result='`+result+`' ;        `
+        let sql3 =`INSERT INTO well (wellBarCode) VALUES ('`+wellBarCode+`')`;
+        con.query(sql3,function(){});
+        /*let sql1=` UPDATE welltesting SET result = '`+result+`' ,testingEndTime='`+currentTime+`' WHERE (poolBarCode = '`+poolBarCode+`' and wellBarCode='`+wellBarCode+`');  `;*/
+        con.query(sql1, function (err,result) {
+            if(err)throw err
+         });
+         con.query(sql2, function (err,result) {
+            if(err)throw err
+         });
+    }
    
 
     let html = `<!DOCTYPE html>
@@ -502,31 +517,26 @@ function writeWellTesting(req, res) {
             }
     </style>
     <body>
-        <form action="/welltesting" method="get" id="submitwelltesting" >
+        <form action="/welltesting" method="get"  >
     
-        <p>Well Bar Code:     <input type="text" name="wellBarCode" id="wellBarCode" value="" > </input> </p>
-        <p>Pool Bar Code: <input type="text" name="poolBarCode" id="poolBarCode" value=""> </input> </p>
+        <p>Well Bar Code:     <input type="text" name="wellBarCode" id="wellBarCode" value="" > </input> </p >
+        <p>Pool Bar Code: <input type="text" name="poolBarCode" id="poolBarCode" value=""> </input> </p >
         <p>Result:  <select name="result">
             <option value="in progress">in progress</option>
             <option value="negative">negative</option>
             <option value="positive">positive</option>
            
-        </select></p>
+        </select></p >
         <input type="submit" value="Add">
         <br></br>
         <br></br>
         </form>
-        `;
-        if(wellBarCode!=""&&poolBarCode!=""){
         
-            let sql1=` UPDATE welltesting SET result = '`+result+`' WHERE (poolBarCode = '`+poolBarCode+`' and wellBarCode='`+wellBarCode+`');  `;
-            con.query(sql1, function () { });
-        }
+       
        
 
-        html+=
-        `
-        <form action="/welltesting" method="get" id="submitwelltesting" >
+        
+        <form action="/welltesting" method="get"  >
         <table id=well>
             <tr>
                 <th>Well Bar Code</th>
@@ -540,17 +550,28 @@ function writeWellTesting(req, res) {
        let sql = `SELECT * FROM welltesting `
        
     con.query(sql, function (err, result) {
+        if (err) throw err;
         for (let item of result) {
+            
 
                
             
 
-            if (query[item.wellBarCode] != null) {
+            if (query[("p"+item.wellBarCode)] != null) {
+               
 
-                let tempsql = `DELETE FROM welltesting WHERE wellBarcode="` + item.wellBarcode + `"`;
-                con.query(tempsql, function () { });
+                let tempsql = `DELETE FROM welltesting WHERE wellBarCode="` + item.wellBarCode + `"`;
+                con.query(tempsql, function (err,resultx) { 
+                    if(err) throw err
+                    let tempsql1 = `DELETE FROM well WHERE wellBarCode="` + item.wellBarCode + `"`;
+                        con.query(tempsql1, function (err,result) {
+                            if (err ) throw err;
+                         });
+
+                });
             } else {
-                html += `<td><input type="checkbox" name="` + item.wellBarCode + `">` + item.wellBarCode + `</input></td>
+                html += `
+                <tr><td><input type="checkbox" name="p` + item.wellBarCode + `"></input>` + item.wellBarCode + `</td>
                     <td>`+ item.poolBarCode + `</td>
                     <td>`+ item.result + `</td>
                     </tr>`
@@ -600,7 +621,7 @@ function writeWellTesting(req, res) {
 
         res.write(html);
         res.end();
-    })
+    });
 
 
 
