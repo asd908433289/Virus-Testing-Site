@@ -212,8 +212,14 @@ function writeTestCollection(req, res) {
 
                     if (query[item.testBarcode] != null) {
 
-                        let tempsql = `DELETE FROM employeetest WHERE testBarcode="` + item.testBarcode + `"`;
-                        con.query(tempsql, function () { });
+                        let tempsql2 = `DELETE FROM poolmap WHERE testBarcode="`+item.testBarcode+`"`;
+                        con.query(tempsql2,function(){
+                            let tempsql = `DELETE FROM employeetest WHERE testBarcode="` + item.testBarcode + `"`;
+                        con.query(tempsql, function (err,result) {
+                            if (err ) throw err;
+                         });
+                        });
+                        
                     }
                     else {
                         html += `<tr>
@@ -345,9 +351,11 @@ function writePoolMapping(req, res) {
 
             if (query[("p" + item.poolBarCode)] != null) {
 
-                let sql4 = `DELETE FROM poolmap WHERE poolBarCode="` + item.poolBarCode + `"`;
+                let sql4 = `DELETE FROM poolmap WHERE poolBarCode="` + item.poolBarCode + `";`;
                 con.query(sql4, function (err2, result2) {
                     if (err2) throw err2;
+                    let newsql = ` DELETE FROM pool WHERE poolBarCode="`+item.poolBarCode+`";`;
+                    con.query(newsql,function(){});
                 });
             }
         }
@@ -355,6 +363,9 @@ function writePoolMapping(req, res) {
 
 
         if (query.poolBarCode != null && query.poolBarCode.length > 0) {
+
+            let sql6 = `INSERT INTO pool (poolBarCode) VALUES ('`+query.poolBarCode+`')`;
+            con.query(sql6,function(){});
 
             let sql5 = `SELECT * FROM poolmap GROUP BY poolBarCode`;
             con.query(sql5, function (err5, result5) {
@@ -716,16 +727,19 @@ function writeHome(req, res) {
                     </tr>
                     <tr>`;
             con.query(sql2, function (err, result2) {
-                
+                if(err) throw err;
 
                 for (let item of result2) {
-                   
-                   let t = item.collectionTime.toISOString().substr(0,10).split("-");
-                   
+                        console.log(item);
+                        console.log(item.collectionTime.toISOString());
+                        let t = item.collectionTime.toISOString().substr(0,10).split("-");
+                        
+                       
+                         html += `<td>` +   t[1]  +`/` +t[2]+ `/`+t[0]+ `</td>
+                         <td>`+item.result+`</td>
+                         </tr>`;
+                    
                   
-                    html += `<td>` +   t[1]  +`/` +t[2]+ `/`+t[0]+ `</td>
-                    <td>`+item.result+`</td>
-                    </tr>`
                 }
 
 
