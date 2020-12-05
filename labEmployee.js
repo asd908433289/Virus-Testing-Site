@@ -697,9 +697,15 @@ function writeHome(req, res) {
         res.end();
 
         } else {
-            let sql2 = `select(SELECT T.collectionTime FROM employeetest T, employee E where E.EmployeeID=  (SELECT employeeid from employee where email="` + Email + `")and E.EmployeeID=T.employeeId)as collectionTime,(select wt.result from welltesting wt,poolmap pm where wt.poolbarcode=(select PM.poolbarcode from poolmap pm,employeetest t where pm.poolbarcode=(select t.testBarcode from employeetest T, EMPLOYEE E 
-                WHERE E.employeeID=(SELECT employeeid from employee where email="` + Email + `") and E.employeeID=t.employeeid) and pm.testbarcode=t.testbarcode) and wt.poolbarcode=pm.poolbarcode)as result  `;
-            
+            let sql2 = `select Q.collectiontime, W.result  FROM welltesting W,
+            (select P.poolBarCode, K.collectionTime FROM poolmap P,
+                   (select E.testBarcode, E.collectionTime FROM employeetest E,
+                       (select employeeID AS targetID from employee WHERE email="`+Email+`") M 
+                       WHERE E.employeeID=M.targetID) K
+                   WHERE p.testBarcode=K.testBarcode) Q
+               
+           WHERE W.poolBarcode=Q.poolBarcode;`;
+
             html = `<!DOCTYPE html>
             <html>
             
@@ -730,14 +736,18 @@ function writeHome(req, res) {
                 if(err) throw err;
 
                 for (let item of result2) {
-                        console.log(item);
-                        console.log(item.collectionTime.toISOString());
+                    
+                       if(item.collectionTime!=null && item.result !=null){
+                        
                         let t = item.collectionTime.toISOString().substr(0,10).split("-");
                         
                        
                          html += `<td>` +   t[1]  +`/` +t[2]+ `/`+t[0]+ `</td>
                          <td>`+item.result+`</td>
                          </tr>`;
+                       }
+                        
+                      
                     
                   
                 }
