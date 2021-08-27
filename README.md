@@ -5,30 +5,10 @@
 
 ## **How To Use**
 
-**Employee Login To Test Result Page**
-
-<p align="center">
-<img src = "./READMEImg/EmployeeLogin.gif" style = "
-  width: 100%;"/> 
-
-    *Tip: *
-</p>
-
-
 **Lab Employer Login Collector **
 
 <p align="center">
 <img src = "./READMEImg/LabEmployerLoginCollector.gif" style = "
-  width: 100%;"/> 
-
-    *Tip: *
-</p>
-
-
-**Lab Employer Login Test Creation**
-
-<p align="center">
-<img src = "./READMEImg/LabEmployerLoginTestCreation.gif" style = "
   width: 100%;"/> 
 </p>
 
@@ -39,26 +19,33 @@
   width: 100%;"/> 
 </p>
 
+**Lab Employer Login Test Creation**
+
+<p align="center">
+<img src = "./READMEImg/LabEmployerLoginTestCreation.gif" style = "
+  width: 100%;"/> 
+</p>
+
 **Pool Mapping**
 
 <p align="center">
-<img src = "./READMEImg/CheckPoint6.gif" style = "
+<img src = "./READMEImg/PoolMapping.gif" style = "
   width: 100%;"/> 
-
-    *Tip: Avoid traps*
 </p>
 
 **Well Testing**
 
 <p align="center">
-<img src = "./READMEImg/CheckPoint7New.gif" style = "
+<img src = "./READMEImg/WellTesting.gif" style = "
   width: 100%;"/> 
-
-    *Tip: Find another path other than going straight up*
 </p>
 
+**Employee Login To Test Result Page**
 
-
+<p align="center">
+<img src = "./READMEImg/EmployeeLogin.gif" style = "
+  width: 100%;"/>    
+</p>
 
 ## **Built With**
 * JavaScript
@@ -68,13 +55,11 @@
 * Express.js
 * MySQL
 
-
 ## **Contributors**
 ### Github:
 * Sheng Da Chen: https://github.com/asd908433289
-* Jin Quan Chen: https://github.com/asd908433289
+* Jin Quan Chen: https://github.com/Jinqchen
 
 ### LinkedIn:
 * Sheng Da Chen: https://www.linkedin.com/in/sheng-chen-684014202/
 * Jin Quan Chen: https://www.linkedin.com/in/jinquan-chen-846b141ab/
-
