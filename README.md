@@ -6,7 +6,7 @@
 ## **How To Use**
 
 
-**Lab Employer Login Collector **
+**Lab Employer Login Collector**
 
 <p align="center">
 <img src = "./READMEImg/LabEmployerLoginCollector.gif" style = "
