@@ -5,7 +5,7 @@
 
 ## **How To Use**
 
-**Login Page**
+**Employee Login Page**
 
 <p align="center">
 <img src = "./READMEImg/CheckPoint1New.gif" style = "
@@ -16,7 +16,7 @@
 
 
 
-**Checkpoint 2**
+**Employee Test Result Page**
 
 <p align="center">
 <img src = "./READMEImg/CheckPoint2Hammer.gif" style = "
@@ -27,7 +27,7 @@
 
 
 
-**Checkpoint 3**
+**Lab Employer Login Collector **
 
 <p align="center">
 <img src = "./READMEImg/CheckPoint3YinYang.gif" style = "
@@ -37,21 +37,21 @@
 </p>
 
 
-**CheckPoint 4**
+**Lab Employer Login Test Creation**
 
 <p align="center">
 <img src = "./READMEImg/CheckPoint4RotatingBars.gif" style = "
   width: 100%;"/> 
 </p>
 
-**CheckPoint 5**
+**Adding Test Bar Code**
 
 <p align="center">
 <img src = "./READMEImg/CheckPoint5RotatingFan.gif" style = "
   width: 100%;"/> 
 </p>
 
-**CheckPoint 6**
+**Pool Mapping**
 
 <p align="center">
 <img src = "./READMEImg/CheckPoint6.gif" style = "
@@ -60,7 +60,7 @@
     *Tip: Avoid traps*
 </p>
 
-**CheckPoint 7**
+**Well Testing**
 
 <p align="center">
 <img src = "./READMEImg/CheckPoint7New.gif" style = "
@@ -70,37 +70,16 @@
 </p>
 
 
-**CheckPoint 8**
 
-<p align="center">
-<img src = "./READMEImg/CheckPoint8.gif" style = "
-  width: 100%;"/> 
-</p>
-
-**CheckPoint 9**
-
-<p align="center">
-<img src = "./READMEImg/CheckPoint9.gif" style = "
-  width: 100%;"/> 
-
-    *Tip: Find the path to avoid all enemies*
-</p>
-
-
-**CheckPoint 10**
-
-<p align="center">
-<img src = "./READMEImg/CheckPoint10.gif" style = "
-  width: 100%;"/> 
-</p>
 
 ## **Built With**
-* Unity
-* C#
+* JavaScript
+* HTML
+* CSS
+* Node.js
+* Express.js
+* MySQL
 
-## **Deployment**
-* Hosted on Unity Connect
-* Check it out: https://play.unity.com/mg/other/newbuild-4
 
 ## **Contributors**
 ### Github:
