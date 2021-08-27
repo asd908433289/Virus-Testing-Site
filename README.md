@@ -5,49 +5,37 @@
 
 ## **How To Use**
 
-**Employee Login Page**
+**Employee Login To Test Result Page**
 
 <p align="center">
-<img src = "./READMEImg/CheckPoint1New.gif" style = "
+<img src = "./READMEImg/EmployeeLogin.gif" style = "
   width: 100%;"/> 
 
-    *Tip: Avoid traps*
+    *Tip: *
 </p>
-
-
-
-**Employee Test Result Page**
-
-<p align="center">
-<img src = "./READMEImg/CheckPoint2Hammer.gif" style = "
-    width: 100%;"/> 
-
-    *Tip: Adjust your camera angle to pass*
-</p>
-
 
 
 **Lab Employer Login Collector **
 
 <p align="center">
-<img src = "./READMEImg/CheckPoint3YinYang.gif" style = "
+<img src = "./READMEImg/LabEmployerLoginCollector.gif" style = "
   width: 100%;"/> 
 
-    *Tip: Yin & Yang planes are rotating*
+    *Tip: *
 </p>
 
 
 **Lab Employer Login Test Creation**
 
 <p align="center">
-<img src = "./READMEImg/CheckPoint4RotatingBars.gif" style = "
+<img src = "./READMEImg/LabEmployerLoginTestCreation.gif" style = "
   width: 100%;"/> 
 </p>
 
 **Adding Test Bar Code**
 
 <p align="center">
-<img src = "./READMEImg/CheckPoint5RotatingFan.gif" style = "
+<img src = "./READMEImg/AddingTestBarCode.gif" style = "
   width: 100%;"/> 
 </p>
 
@@ -83,11 +71,10 @@
 
 ## **Contributors**
 ### Github:
-* Sheng Da Chen: https://www.linkedin.com/in/sheng-chen-684014202/
-* Jie Zhang: https://www.linkedin.com/in/jie-zhang-54a2b2160/
-* Yanhui Chen: https://www.linkedin.com/in/yanhui-chen-b75660203/
+* Sheng Da Chen: https://github.com/asd908433289
+* Jin Quan Chen: https://github.com/asd908433289
 
 ### LinkedIn:
-* Sheng Da Chen: https://github.com/asd908433289
-* Jie Zhang: https://github.com/Jie-Zhang-2001
-* Yanhui Chen: https://github.com/YanhuiChen1
+* Sheng Da Chen: https://www.linkedin.com/in/sheng-chen-684014202/
+* Jin Quan Chen: https://www.linkedin.com/in/jinquan-chen-846b141ab/
+
